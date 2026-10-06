@@ -1,0 +1,154 @@
+{
+  "id": "notion",
+  "name": "Notion",
+  "description": "Workspace knowledge base, documents, database queries, and page blocks.",
+  "category": "productivity",
+  "base_url": "https://api.notion.com/v1",
+  "icon": "file-text",
+  "docs_url": "https://developers.notion.com/reference",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bearer ",
+    "env_vars": ["NOTION_API_KEY", "NOTION_TOKEN"],
+    "oauth2_authorize_url": "https://api.notion.com/v1/oauth/authorize",
+    "oauth2_token_url": "https://api.notion.com/v1/oauth/token"
+  },
+  "actions": [
+    {
+      "id": "notion.search",
+      "name": "Search Notion",
+      "description": "Searches all pages and databases in the workspace accessible to integration.",
+      "app_id": "notion",
+      "method": "POST",
+      "path": "/search",
+      "tags": ["search", "read"],
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "The text to match against page titles",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "page_size",
+          "type": "integer",
+          "description": "Number of items to return (max 100)",
+          "required": false,
+          "location": "body",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "notion.get_page",
+      "name": "Get Page",
+      "description": "Retrieves metadata and property values of a specific page.",
+      "app_id": "notion",
+      "method": "GET",
+      "path": "/pages/{page_id}",
+      "tags": ["pages", "read"],
+      "parameters": [
+        {
+          "name": "page_id",
+          "type": "string",
+          "description": "The unique identifier of the Notion page",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "notion.create_page",
+      "name": "Create Page",
+      "description": "Creates a new page in a database or as a child of another page.",
+      "app_id": "notion",
+      "method": "POST",
+      "path": "/pages",
+      "tags": ["pages", "write"],
+      "parameters": [
+        {
+          "name": "parent",
+          "type": "object",
+          "description": "Parent database_id or page_id object",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "properties",
+          "type": "object",
+          "description": "Property values corresponding to schema",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "children",
+          "type": "array",
+          "description": "Initial block elements inside the page",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "notion.query_database",
+      "name": "Query Database",
+      "description": "Executes filter and sorting queries against a structured Notion database.",
+      "app_id": "notion",
+      "method": "POST",
+      "path": "/databases/{database_id}/query",
+      "tags": ["database", "read"],
+      "parameters": [
+        {
+          "name": "database_id",
+          "type": "string",
+          "description": "The ID of the database to query",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "filter",
+          "type": "object",
+          "description": "Filter criteria matching database columns",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "page_size",
+          "type": "integer",
+          "description": "Number of rows to retrieve",
+          "required": false,
+          "location": "body",
+          "default": 50
+        }
+      ]
+    },
+    {
+      "id": "notion.append_block_children",
+      "name": "Append Block Children",
+      "description": "Appends new block children to a page or parent block.",
+      "app_id": "notion",
+      "method": "PATCH",
+      "path": "/blocks/{block_id}/children",
+      "tags": ["blocks", "write"],
+      "parameters": [
+        {
+          "name": "block_id",
+          "type": "string",
+          "description": "Identifier of parent block or page",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "children",
+          "type": "array",
+          "description": "List of block objects to append",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    }
+  ]
+}

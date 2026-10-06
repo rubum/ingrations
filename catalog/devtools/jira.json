@@ -1,0 +1,132 @@
+{
+  "id": "jira",
+  "name": "Jira Software",
+  "description": "Enterprise issue and sprint management, ticket transitions, and comments.",
+  "category": "devtools",
+  "base_url": "https://your-domain.atlassian.net/rest/api/3",
+  "icon": "check-square",
+  "docs_url": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "basic",
+    "header_name": "Authorization",
+    "env_vars": ["JIRA_API_TOKEN", "JIRA_TOKEN"],
+    "oauth2_authorize_url": "https://auth.atlassian.com/authorize",
+    "oauth2_token_url": "https://auth.atlassian.com/oauth/token",
+    "oauth2_scopes": ["read:jira-work", "write:jira-work"]
+  },
+  "actions": [
+    {
+      "id": "jira.get_issue",
+      "name": "Get Issue",
+      "description": "Returns issue details, summary, status, priority, and assignees.",
+      "app_id": "jira",
+      "method": "GET",
+      "path": "/issue/{issue_id_or_key}",
+      "tags": ["issues", "read"],
+      "parameters": [
+        {
+          "name": "issue_id_or_key",
+          "type": "string",
+          "description": "Issue key (e.g. PROJ-101) or issue ID",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "jira.create_issue",
+      "name": "Create Issue",
+      "description": "Creates an issue or, if provided with parent, a subtask.",
+      "app_id": "jira",
+      "method": "POST",
+      "path": "/issue",
+      "tags": ["issues", "write"],
+      "parameters": [
+        {
+          "name": "fields",
+          "type": "object",
+          "description": "Issue fields including project, summary, issuetype, description",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "jira.search_issues_jql",
+      "name": "Search Issues (JQL)",
+      "description": "Searches issues using JQL (Jira Query Language).",
+      "app_id": "jira",
+      "method": "POST",
+      "path": "/search",
+      "tags": ["search", "read"],
+      "parameters": [
+        {
+          "name": "jql",
+          "type": "string",
+          "description": "JQL query string (e.g. 'project = ENG AND status = Open')",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "maxResults",
+          "type": "integer",
+          "description": "The maximum number of items to return",
+          "required": false,
+          "location": "body",
+          "default": 15
+        }
+      ]
+    },
+    {
+      "id": "jira.add_comment",
+      "name": "Add Comment",
+      "description": "Adds a new comment to an issue.",
+      "app_id": "jira",
+      "method": "POST",
+      "path": "/issue/{issue_id_or_key}/comment",
+      "tags": ["comments", "write"],
+      "parameters": [
+        {
+          "name": "issue_id_or_key",
+          "type": "string",
+          "description": "Issue key or ID",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "body",
+          "type": "object",
+          "description": "Atlassian Document Format (ADF) body object",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "jira.transition_issue",
+      "name": "Transition Issue",
+      "description": "Performs an issue workflow transition (e.g. In Progress, Done).",
+      "app_id": "jira",
+      "method": "POST",
+      "path": "/issue/{issue_id_or_key}/transitions",
+      "tags": ["workflow", "write"],
+      "parameters": [
+        {
+          "name": "issue_id_or_key",
+          "type": "string",
+          "description": "Issue key or ID",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "transition",
+          "type": "object",
+          "description": "Transition object with target transition ID",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    }
+  ]
+}

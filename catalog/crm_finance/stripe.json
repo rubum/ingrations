@@ -1,0 +1,167 @@
+{
+  "id": "stripe",
+  "name": "Stripe",
+  "description": "Payments, customer management, refunds, subscriptions, and invoices.",
+  "category": "crm_finance",
+  "base_url": "https://api.stripe.com/v1",
+  "icon": "credit-card",
+  "docs_url": "https://stripe.com/docs/api",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bearer ",
+    "env_vars": ["STRIPE_SECRET_KEY", "STRIPE_API_KEY"]
+  },
+  "actions": [
+    {
+      "id": "stripe.create_customer",
+      "name": "Create Customer",
+      "description": "Creates a new customer object in Stripe.",
+      "app_id": "stripe",
+      "method": "POST",
+      "path": "/customers",
+      "tags": ["customers", "write"],
+      "parameters": [
+        {
+          "name": "email",
+          "type": "string",
+          "description": "The customer's email address",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "The customer's full name or business name",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "metadata",
+          "type": "object",
+          "description": "Key-value metadata pairs",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "stripe.list_customers",
+      "name": "List Customers",
+      "description": "Returns a list of customer records.",
+      "app_id": "stripe",
+      "method": "GET",
+      "path": "/customers",
+      "tags": ["customers", "read"],
+      "parameters": [
+        {
+          "name": "email",
+          "type": "string",
+          "description": "Filter by customer email address",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "description": "Number of objects to return (max 100)",
+          "required": false,
+          "location": "query",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "stripe.create_payment_intent",
+      "name": "Create Payment Intent",
+      "description": "Creates a PaymentIntent to initiate and track customer payment flow.",
+      "app_id": "stripe",
+      "method": "POST",
+      "path": "/payment_intents",
+      "tags": ["payments", "write"],
+      "parameters": [
+        {
+          "name": "amount",
+          "type": "integer",
+          "description": "Amount intended to be collected in smallest currency unit (e.g. cents)",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "description": "Three-letter ISO currency code in lowercase (e.g. 'usd')",
+          "required": true,
+          "location": "body",
+          "default": "usd"
+        },
+        {
+          "name": "customer",
+          "type": "string",
+          "description": "ID of the Customer this PaymentIntent is for",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "stripe.create_refund",
+      "name": "Create Refund",
+      "description": "Creates a refund for a previously captured charge.",
+      "app_id": "stripe",
+      "method": "POST",
+      "path": "/refunds",
+      "tags": ["refunds", "write"],
+      "parameters": [
+        {
+          "name": "charge",
+          "type": "string",
+          "description": "The identifier of the charge to refund",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "payment_intent",
+          "type": "string",
+          "description": "The identifier of the PaymentIntent to refund",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "amount",
+          "type": "integer",
+          "description": "Optional partial refund amount in cents",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "stripe.list_charges",
+      "name": "List Charges",
+      "description": "Returns a list of charges that were previously created.",
+      "app_id": "stripe",
+      "method": "GET",
+      "path": "/charges",
+      "tags": ["charges", "read"],
+      "parameters": [
+        {
+          "name": "customer",
+          "type": "string",
+          "description": "Only return charges for the given customer ID",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "description": "Number of charges to return",
+          "required": false,
+          "location": "query",
+          "default": 10
+        }
+      ]
+    }
+  ]
+}

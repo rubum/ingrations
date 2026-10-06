@@ -1,0 +1,165 @@
+{
+  "id": "gitlab",
+  "name": "GitLab",
+  "description": "Git repository management, merge requests, CI/CD pipelines, and project issues.",
+  "category": "devtools",
+  "base_url": "https://gitlab.com/api/v4",
+  "icon": "gitlab",
+  "docs_url": "https://docs.gitlab.com/ee/api/",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "custom_header",
+    "header_name": "PRIVATE-TOKEN",
+    "token_prefix": "",
+    "env_vars": ["GITLAB_TOKEN", "CI_JOB_TOKEN"]
+  },
+  "actions": [
+    {
+      "id": "gitlab.get_project",
+      "name": "Get Project",
+      "description": "Retrieves metadata for a GitLab project by ID or URL-encoded path.",
+      "app_id": "gitlab",
+      "method": "GET",
+      "path": "/projects/{id}",
+      "tags": ["projects", "read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "The ID or URL-encoded path of the project",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "gitlab.list_merge_requests",
+      "name": "List Merge Requests",
+      "description": "Lists merge requests for a project with state filter.",
+      "app_id": "gitlab",
+      "method": "GET",
+      "path": "/projects/{id}/merge_requests",
+      "tags": ["merge_requests", "read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Project ID or path",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "description": "Filter by state: opened, closed, locked, or merged",
+          "required": false,
+          "location": "query",
+          "default": "opened"
+        }
+      ]
+    },
+    {
+      "id": "gitlab.create_merge_request",
+      "name": "Create Merge Request",
+      "description": "Creates a new merge request in a GitLab project.",
+      "app_id": "gitlab",
+      "method": "POST",
+      "path": "/projects/{id}/merge_requests",
+      "tags": ["merge_requests", "write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Project ID or path",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "source_branch",
+          "type": "string",
+          "description": "The source branch name",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "target_branch",
+          "type": "string",
+          "description": "The target branch name",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Title of the MR",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Description of the MR",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "gitlab.list_pipelines",
+      "name": "List Pipelines",
+      "description": "Lists CI/CD pipelines in a GitLab project.",
+      "app_id": "gitlab",
+      "method": "GET",
+      "path": "/projects/{id}/pipelines",
+      "tags": ["pipelines", "read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Project ID or path",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "Filter by pipeline status: running, pending, success, failed, canceled",
+          "required": false,
+          "location": "query"
+        }
+      ]
+    },
+    {
+      "id": "gitlab.create_issue",
+      "name": "Create Issue",
+      "description": "Creates a new issue in a GitLab project.",
+      "app_id": "gitlab",
+      "method": "POST",
+      "path": "/projects/{id}/issues",
+      "tags": ["issues", "write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Project ID or path",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "The title of an issue",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "The description of an issue",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    }
+  ]
+}

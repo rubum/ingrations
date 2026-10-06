@@ -1,0 +1,112 @@
+{
+  "id": "supabase",
+  "name": "Supabase",
+  "description": "Postgres database queries, storage buckets, and user authentication management.",
+  "category": "cloud",
+  "base_url": "https://{project_ref}.supabase.co",
+  "icon": "database",
+  "docs_url": "https://supabase.com/docs/reference/api",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "api_key",
+    "header_name": "apikey",
+    "env_vars": ["SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_ANON_KEY", "SUPABASE_PROJECT_REF"]
+  },
+  "actions": [
+    {
+      "id": "supabase.postgrest_query",
+      "name": "Query Table (PostgREST)",
+      "description": "Selects rows from a database table using PostgREST operators.",
+      "app_id": "supabase",
+      "method": "GET",
+      "path": "/rest/v1/{table}",
+      "tags": ["database", "read"],
+      "parameters": [
+        {
+          "name": "table",
+          "type": "string",
+          "description": "The table name to query",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "select",
+          "type": "string",
+          "description": "Columns to select (e.g. '*' or 'id,name,created_at')",
+          "required": false,
+          "location": "query",
+          "default": "*"
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "description": "Maximum number of rows to return",
+          "required": false,
+          "location": "query",
+          "default": 20
+        }
+      ]
+    },
+    {
+      "id": "supabase.postgrest_insert",
+      "name": "Insert Rows (PostgREST)",
+      "description": "Inserts one or more records into a specified table.",
+      "app_id": "supabase",
+      "method": "POST",
+      "path": "/rest/v1/{table}",
+      "tags": ["database", "write"],
+      "parameters": [
+        {
+          "name": "table",
+          "type": "string",
+          "description": "The table name to insert into",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "record",
+          "type": "object",
+          "description": "Row object or list of row objects to insert",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "supabase.storage_list_buckets",
+      "name": "List Storage Buckets",
+      "description": "Lists all storage buckets in the Supabase project.",
+      "app_id": "supabase",
+      "method": "GET",
+      "path": "/storage/v1/bucket",
+      "tags": ["storage", "read"],
+      "parameters": []
+    },
+    {
+      "id": "supabase.storage_list_objects",
+      "name": "List Storage Objects",
+      "description": "Lists files within a storage bucket and folder prefix.",
+      "app_id": "supabase",
+      "method": "POST",
+      "path": "/storage/v1/object/list/{bucket_id}",
+      "tags": ["storage", "read"],
+      "parameters": [
+        {
+          "name": "bucket_id",
+          "type": "string",
+          "description": "The bucket identifier",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "prefix",
+          "type": "string",
+          "description": "Folder prefix filter",
+          "required": false,
+          "location": "body",
+          "default": ""
+        }
+      ]
+    }
+  ]
+}

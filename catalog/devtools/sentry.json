@@ -1,0 +1,106 @@
+{
+  "id": "sentry",
+  "name": "Sentry",
+  "description": "Application performance monitoring, error tracking, and stack trace inspection.",
+  "category": "devtools",
+  "base_url": "https://sentry.io/api/0",
+  "icon": "alert-triangle",
+  "docs_url": "https://docs.sentry.io/api/",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bearer ",
+    "env_vars": ["SENTRY_AUTH_TOKEN", "SENTRY_TOKEN"]
+  },
+  "actions": [
+    {
+      "id": "sentry.list_issues",
+      "name": "List Organization Issues",
+      "description": "Retrieves unresolved error issues matching search filters.",
+      "app_id": "sentry",
+      "method": "GET",
+      "path": "/organizations/{organization_slug}/issues/",
+      "tags": ["issues", "read"],
+      "parameters": [
+        {
+          "name": "organization_slug",
+          "type": "string",
+          "description": "The slug of the organization",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "description": "Sentry query filter syntax (e.g. 'is:unresolved')",
+          "required": false,
+          "location": "query",
+          "default": "is:unresolved"
+        }
+      ]
+    },
+    {
+      "id": "sentry.get_issue",
+      "name": "Get Issue Details",
+      "description": "Returns issue metadata, culprit, first seen, and user impact counts.",
+      "app_id": "sentry",
+      "method": "GET",
+      "path": "/issues/{issue_id}/",
+      "tags": ["issues", "read"],
+      "parameters": [
+        {
+          "name": "issue_id",
+          "type": "string",
+          "description": "Sentry issue ID",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "sentry.get_latest_event",
+      "name": "Get Latest Event for Issue",
+      "description": "Fetches stack trace frames, context breadcrumbs, and tags for latest error event.",
+      "app_id": "sentry",
+      "method": "GET",
+      "path": "/issues/{issue_id}/events/latest/",
+      "tags": ["events", "read"],
+      "parameters": [
+        {
+          "name": "issue_id",
+          "type": "string",
+          "description": "Sentry issue ID",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "sentry.update_issue",
+      "name": "Update Issue Status",
+      "description": "Resolves, ignores, or assigns an issue.",
+      "app_id": "sentry",
+      "method": "PUT",
+      "path": "/issues/{issue_id}/",
+      "tags": ["issues", "write"],
+      "parameters": [
+        {
+          "name": "issue_id",
+          "type": "string",
+          "description": "Sentry issue ID",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "Target status: resolved, unresolved, or ignored",
+          "required": true,
+          "location": "body",
+          "enum": ["resolved", "unresolved", "ignored"]
+        }
+      ]
+    }
+  ]
+}

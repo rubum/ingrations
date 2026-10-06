@@ -1,0 +1,193 @@
+{
+  "id": "google_workspace",
+  "name": "Google Workspace",
+  "description": "Gmail email search and dispatch, Google Calendar events, and Google Drive files.",
+  "category": "productivity",
+  "base_url": "https://www.googleapis.com",
+  "icon": "mail",
+  "docs_url": "https://developers.google.com/workspace",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bearer ",
+    "env_vars": ["GOOGLE_ACCESS_TOKEN", "GMAIL_TOKEN"],
+    "oauth2_authorize_url": "https://accounts.google.com/o/oauth2/v2/auth",
+    "oauth2_token_url": "https://oauth2.googleapis.com/token",
+    "oauth2_scopes": [
+      "https://www.googleapis.com/auth/gmail.send",
+      "https://www.googleapis.com/auth/gmail.readonly",
+      "https://www.googleapis.com/auth/calendar.events",
+      "https://www.googleapis.com/auth/drive.readonly"
+    ]
+  },
+  "actions": [
+    {
+      "id": "google_workspace.gmail_send_message",
+      "name": "Send Email (Gmail)",
+      "description": "Sends an email message via Gmail API using base64url-encoded RFC 2822 payload.",
+      "app_id": "google_workspace",
+      "method": "POST",
+      "path": "/gmail/v1/users/{user_id}/messages/send",
+      "tags": ["gmail", "write"],
+      "parameters": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "description": "The user's email address or 'me'",
+          "required": true,
+          "location": "path",
+          "default": "me"
+        },
+        {
+          "name": "raw",
+          "type": "string",
+          "description": "The entire email message in base64url string format",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "google_workspace.gmail_list_messages",
+      "name": "List Emails (Gmail)",
+      "description": "Lists the messages in the user's mailbox matching search query.",
+      "app_id": "google_workspace",
+      "method": "GET",
+      "path": "/gmail/v1/users/{user_id}/messages",
+      "tags": ["gmail", "read"],
+      "parameters": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "description": "User email or 'me'",
+          "required": true,
+          "location": "path",
+          "default": "me"
+        },
+        {
+          "name": "q",
+          "type": "string",
+          "description": "Gmail search query syntax (e.g. 'from:boss is:unread')",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "maxResults",
+          "type": "integer",
+          "description": "Maximum number of messages to return",
+          "required": false,
+          "location": "query",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "google_workspace.calendar_create_event",
+      "name": "Create Calendar Event",
+      "description": "Creates an event on the user's primary Google Calendar.",
+      "app_id": "google_workspace",
+      "method": "POST",
+      "path": "/calendar/v3/calendars/{calendar_id}/events",
+      "tags": ["calendar", "write"],
+      "parameters": [
+        {
+          "name": "calendar_id",
+          "type": "string",
+          "description": "Calendar identifier, typically 'primary'",
+          "required": true,
+          "location": "path",
+          "default": "primary"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "description": "Title of the event",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "start",
+          "type": "object",
+          "description": "Start time object: { dateTime: ISO string, timeZone: string }",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "end",
+          "type": "object",
+          "description": "End time object: { dateTime: ISO string, timeZone: string }",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Description / body text of event",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "google_workspace.calendar_list_events",
+      "name": "List Calendar Events",
+      "description": "Retrieves upcoming events from a calendar.",
+      "app_id": "google_workspace",
+      "method": "GET",
+      "path": "/calendar/v3/calendars/{calendar_id}/events",
+      "tags": ["calendar", "read"],
+      "parameters": [
+        {
+          "name": "calendar_id",
+          "type": "string",
+          "description": "Calendar identifier, usually 'primary'",
+          "required": true,
+          "location": "path",
+          "default": "primary"
+        },
+        {
+          "name": "timeMin",
+          "type": "string",
+          "description": "Lower bound (inclusive) for an event's end time (ISO-8601)",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "maxResults",
+          "type": "integer",
+          "description": "Maximum events to return",
+          "required": false,
+          "location": "query",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "google_workspace.drive_search_files",
+      "name": "Search Files (Google Drive)",
+      "description": "Searches for files in Google Drive matching query criteria.",
+      "app_id": "google_workspace",
+      "method": "GET",
+      "path": "/drive/v3/files",
+      "tags": ["drive", "read"],
+      "parameters": [
+        {
+          "name": "q",
+          "type": "string",
+          "description": "Drive query filter string (e.g. \"name contains 'contract'\")",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "pageSize",
+          "type": "integer",
+          "description": "Maximum number of files to return",
+          "required": false,
+          "location": "query",
+          "default": 10
+        }
+      ]
+    }
+  ]
+}

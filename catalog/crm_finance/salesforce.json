@@ -1,0 +1,118 @@
+{
+  "id": "salesforce",
+  "name": "Salesforce",
+  "description": "CRM leads, contacts, opportunities, and SOQL query execution.",
+  "category": "crm_finance",
+  "base_url": "https://{instance}.my.salesforce.com/services/data/v58.0",
+  "icon": "users",
+  "docs_url": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_what_is_rest_api.htm",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bearer ",
+    "env_vars": ["SALESFORCE_ACCESS_TOKEN", "SF_ACCESS_TOKEN"]
+  },
+  "actions": [
+    {
+      "id": "salesforce.soql_query",
+      "name": "Execute SOQL Query",
+      "description": "Executes a SOQL query against Salesforce records (e.g. Lead, Contact, Account).",
+      "app_id": "salesforce",
+      "method": "GET",
+      "path": "/query",
+      "tags": ["query", "read"],
+      "parameters": [
+        {
+          "name": "q",
+          "type": "string",
+          "description": "SOQL query string (e.g. 'SELECT Id, Name, Email FROM Contact LIMIT 20')",
+          "required": true,
+          "location": "query"
+        }
+      ]
+    },
+    {
+      "id": "salesforce.create_lead",
+      "name": "Create Lead",
+      "description": "Creates a new Lead record.",
+      "app_id": "salesforce",
+      "method": "POST",
+      "path": "/sobjects/Lead",
+      "tags": ["leads", "write"],
+      "parameters": [
+        {
+          "name": "FirstName",
+          "type": "string",
+          "description": "Lead first name",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "LastName",
+          "type": "string",
+          "description": "Lead last name",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "Company",
+          "type": "string",
+          "description": "Lead company name",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "Email",
+          "type": "string",
+          "description": "Lead email address",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "salesforce.get_contact",
+      "name": "Get Contact",
+      "description": "Retrieves field values of a specific Contact by ID.",
+      "app_id": "salesforce",
+      "method": "GET",
+      "path": "/sobjects/Contact/{id}",
+      "tags": ["contacts", "read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Salesforce Contact ID (15 or 18 chars)",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "salesforce.update_opportunity",
+      "name": "Update Opportunity",
+      "description": "Updates field values on an Opportunity record (e.g. StageName, Amount).",
+      "app_id": "salesforce",
+      "method": "PATCH",
+      "path": "/sobjects/Opportunity/{id}",
+      "tags": ["opportunities", "write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Opportunity ID",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "fields",
+          "type": "object",
+          "description": "Fields to update on Opportunity",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    }
+  ]
+}

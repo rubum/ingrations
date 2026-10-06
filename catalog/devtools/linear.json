@@ -1,0 +1,144 @@
+{
+  "id": "linear",
+  "name": "Linear",
+  "description": "Issue tracking, cycle planning, project status, and developer workflows.",
+  "category": "devtools",
+  "base_url": "https://api.linear.app",
+  "icon": "zap",
+  "docs_url": "https://developers.linear.app/docs/graphql/working-with-the-graphql-api",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "",
+    "env_vars": ["LINEAR_API_KEY", "LINEAR_TOKEN"],
+    "oauth2_authorize_url": "https://linear.app/oauth/authorize",
+    "oauth2_token_url": "https://api.linear.app/oauth/token",
+    "oauth2_scopes": ["read", "write", "issues:create"]
+  },
+  "actions": [
+    {
+      "id": "linear.get_issue",
+      "name": "Get Issue",
+      "description": "Fetches a Linear issue by identifier (e.g. CYC-123).",
+      "app_id": "linear",
+      "method": "POST",
+      "path": "/graphql",
+      "tags": ["issues", "read"],
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "GraphQL query string for fetching issue",
+          "required": true,
+          "location": "body",
+          "default": "query Issue($id: String!) { issue(id: $id) { id identifier title description state { name } assignee { name } } }"
+        },
+        {
+          "name": "variables",
+          "type": "object",
+          "description": "GraphQL query variables including issue id or identifier",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "linear.create_issue",
+      "name": "Create Issue",
+      "description": "Creates a new issue in a Linear team.",
+      "app_id": "linear",
+      "method": "POST",
+      "path": "/graphql",
+      "tags": ["issues", "write"],
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "GraphQL mutation for creating an issue",
+          "required": true,
+          "location": "body",
+          "default": "mutation IssueCreate($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { id identifier title url } } }"
+        },
+        {
+          "name": "variables",
+          "type": "object",
+          "description": "Variables object with input: { teamId, title, description, priority }",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "linear.update_issue",
+      "name": "Update Issue",
+      "description": "Updates issue properties, status, state, or priority.",
+      "app_id": "linear",
+      "method": "POST",
+      "path": "/graphql",
+      "tags": ["issues", "write"],
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "GraphQL mutation for updating an issue",
+          "required": true,
+          "location": "body",
+          "default": "mutation IssueUpdate($id: String!, $input: IssueUpdateInput!) { issueUpdate(id: $id, input: $input) { success issue { id identifier state { name } } } }"
+        },
+        {
+          "name": "variables",
+          "type": "object",
+          "description": "Variables with id and input updates",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "linear.create_comment",
+      "name": "Create Comment",
+      "description": "Posts a markdown comment on a Linear issue.",
+      "app_id": "linear",
+      "method": "POST",
+      "path": "/graphql",
+      "tags": ["comments", "write"],
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "GraphQL mutation for creating a comment",
+          "required": true,
+          "location": "body",
+          "default": "mutation CommentCreate($input: CommentCreateInput!) { commentCreate(input: $input) { success comment { id body } } }"
+        },
+        {
+          "name": "variables",
+          "type": "object",
+          "description": "Variables with input: { issueId, body }",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "linear.list_teams",
+      "name": "List Teams",
+      "description": "Lists workspace teams and their identifiers.",
+      "app_id": "linear",
+      "method": "POST",
+      "path": "/graphql",
+      "tags": ["teams", "read"],
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "GraphQL query for teams",
+          "required": true,
+          "location": "body",
+          "default": "query { teams { nodes { id name key } } }"
+        }
+      ]
+    }
+  ]
+}

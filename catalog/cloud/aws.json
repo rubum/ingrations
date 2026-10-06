@@ -1,0 +1,106 @@
+{
+  "id": "aws",
+  "name": "Amazon Web Services (AWS)",
+  "description": "S3 object storage, Lambda function invocations, and EC2 instance management.",
+  "category": "cloud",
+  "base_url": "https://{service}.{region}.amazonaws.com",
+  "icon": "cloud",
+  "docs_url": "https://docs.aws.amazon.com/",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "api_key",
+    "header_name": "Authorization",
+    "env_vars": ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_DEFAULT_REGION"]
+  },
+  "actions": [
+    {
+      "id": "aws.s3_list_buckets",
+      "name": "List S3 Buckets",
+      "description": "Lists all S3 buckets owned by the authenticated sender.",
+      "app_id": "aws",
+      "method": "GET",
+      "path": "/",
+      "tags": ["s3", "storage", "read"],
+      "parameters": []
+    },
+    {
+      "id": "aws.s3_list_objects",
+      "name": "List S3 Objects",
+      "description": "Lists objects within an S3 bucket with prefix filtering.",
+      "app_id": "aws",
+      "method": "GET",
+      "path": "/{bucket}",
+      "tags": ["s3", "storage", "read"],
+      "parameters": [
+        {
+          "name": "bucket",
+          "type": "string",
+          "description": "S3 bucket name",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "prefix",
+          "type": "string",
+          "description": "Limits the response to keys that begin with the specified prefix",
+          "required": false,
+          "location": "query"
+        }
+      ]
+    },
+    {
+      "id": "aws.lambda_list_functions",
+      "name": "List Lambda Functions",
+      "description": "Returns a list of Lambda functions in the current AWS region.",
+      "app_id": "aws",
+      "method": "GET",
+      "path": "/2015-03-31/functions/",
+      "tags": ["lambda", "compute", "read"],
+      "parameters": [
+        {
+          "name": "MaxItems",
+          "type": "integer",
+          "description": "The maximum number of functions to return",
+          "required": false,
+          "location": "query",
+          "default": 20
+        }
+      ]
+    },
+    {
+      "id": "aws.lambda_invoke_function",
+      "name": "Invoke Lambda Function",
+      "description": "Invokes a specific Lambda function synchronously with a JSON payload.",
+      "app_id": "aws",
+      "method": "POST",
+      "path": "/2015-03-31/functions/{function_name}/invocations",
+      "tags": ["lambda", "compute", "write"],
+      "parameters": [
+        {
+          "name": "function_name",
+          "type": "string",
+          "description": "The name or ARN of the Lambda function",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "payload",
+          "type": "object",
+          "description": "The JSON that you want to provide to your Lambda function as input",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "aws.ec2_describe_instances",
+      "name": "Describe EC2 Instances",
+      "description": "Describes the specified EC2 instances or all instances in the account.",
+      "app_id": "aws",
+      "method": "POST",
+      "path": "/?Action=DescribeInstances&Version=2016-11-15",
+      "tags": ["ec2", "compute", "read"],
+      "parameters": []
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "id": "hubspot",
+  "name": "HubSpot",
+  "description": "Marketing and sales CRM contacts, deals, company records, and tickets.",
+  "category": "crm_finance",
+  "base_url": "https://api.hubapi.com",
+  "icon": "target",
+  "docs_url": "https://developers.hubspot.com/docs/api/overview",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bearer ",
+    "env_vars": ["HUBSPOT_ACCESS_TOKEN", "HUBSPOT_TOKEN"]
+  },
+  "actions": [
+    {
+      "id": "hubspot.get_contact",
+      "name": "Get Contact",
+      "description": "Retrieves contact details by contact ID.",
+      "app_id": "hubspot",
+      "method": "GET",
+      "path": "/crm/v3/objects/contacts/{contact_id}",
+      "tags": ["contacts", "read"],
+      "parameters": [
+        {
+          "name": "contact_id",
+          "type": "string",
+          "description": "HubSpot contact identifier",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "hubspot.create_contact",
+      "name": "Create Contact",
+      "description": "Creates a new contact with properties like email, firstname, lastname.",
+      "app_id": "hubspot",
+      "method": "POST",
+      "path": "/crm/v3/objects/contacts",
+      "tags": ["contacts", "write"],
+      "parameters": [
+        {
+          "name": "properties",
+          "type": "object",
+          "description": "Key-value dictionary of contact properties",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "hubspot.search_contacts",
+      "name": "Search Contacts",
+      "description": "Searches for CRM contacts matching filter groups.",
+      "app_id": "hubspot",
+      "method": "POST",
+      "path": "/crm/v3/objects/contacts/search",
+      "tags": ["contacts", "read"],
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "String query to match against default search fields",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "description": "Max contacts to return",
+          "required": false,
+          "location": "body",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "hubspot.create_deal",
+      "name": "Create Deal",
+      "description": "Creates a new Deal record in a pipeline.",
+      "app_id": "hubspot",
+      "method": "POST",
+      "path": "/crm/v3/objects/deals",
+      "tags": ["deals", "write"],
+      "parameters": [
+        {
+          "name": "properties",
+          "type": "object",
+          "description": "Deal properties including dealname, pipeline, dealstage, amount",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    }
+  ]
+}

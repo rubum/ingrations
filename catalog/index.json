@@ -1,0 +1,134 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-10-06T12:00:00Z",
+  "apps": [
+    {
+      "id": "github",
+      "name": "GitHub",
+      "category": "devtools",
+      "description": "Code hosting, pull requests, issues, commits, repositories, and releases.",
+      "file": "devtools/github.json",
+      "actions_count": 6
+    },
+    {
+      "id": "linear",
+      "name": "Linear",
+      "category": "devtools",
+      "description": "Issue tracking, cycle planning, project status, and developer workflows.",
+      "file": "devtools/linear.json",
+      "actions_count": 5
+    },
+    {
+      "id": "jira",
+      "name": "Jira Software",
+      "category": "devtools",
+      "description": "Enterprise issue and sprint management, ticket transitions, and comments.",
+      "file": "devtools/jira.json",
+      "actions_count": 5
+    },
+    {
+      "id": "sentry",
+      "name": "Sentry",
+      "category": "devtools",
+      "description": "Application performance monitoring, error tracking, and stack trace inspection.",
+      "file": "devtools/sentry.json",
+      "actions_count": 4
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab",
+      "category": "devtools",
+      "description": "Git repository management, merge requests, CI/CD pipelines, and project issues.",
+      "file": "devtools/gitlab.json",
+      "actions_count": 5
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "category": "productivity",
+      "description": "Channel messaging, direct messages, thread replies, and notifications.",
+      "file": "productivity/slack.json",
+      "actions_count": 5
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "category": "productivity",
+      "description": "Workspace knowledge base, documents, database queries, and page blocks.",
+      "file": "productivity/notion.json",
+      "actions_count": 5
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "category": "productivity",
+      "description": "Channel messaging, webhooks, voice status, and guild management.",
+      "file": "productivity/discord.json",
+      "actions_count": 4
+    },
+    {
+      "id": "google_workspace",
+      "name": "Google Workspace",
+      "category": "productivity",
+      "description": "Gmail email search and dispatch, Google Calendar events, and Google Drive files.",
+      "file": "productivity/google_workspace.json",
+      "actions_count": 5
+    },
+    {
+      "id": "aws",
+      "name": "Amazon Web Services (AWS)",
+      "category": "cloud",
+      "description": "S3 object storage, Lambda function invocations, and EC2 instance management.",
+      "file": "cloud/aws.json",
+      "actions_count": 5
+    },
+    {
+      "id": "supabase",
+      "name": "Supabase",
+      "category": "cloud",
+      "description": "Postgres database queries, storage buckets, and user authentication management.",
+      "file": "cloud/supabase.json",
+      "actions_count": 4
+    },
+    {
+      "id": "cloudflare",
+      "name": "Cloudflare",
+      "category": "cloud",
+      "description": "DNS records, cache purge, Worker deployment, and firewall rules.",
+      "file": "cloud/cloudflare.json",
+      "actions_count": 4
+    },
+    {
+      "id": "datadog",
+      "name": "Datadog",
+      "category": "cloud",
+      "description": "Metrics querying, APM event log stream, and monitor alert status.",
+      "file": "cloud/datadog.json",
+      "actions_count": 4
+    },
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "category": "crm_finance",
+      "description": "Payments, customer management, refunds, subscriptions, and invoices.",
+      "file": "crm_finance/stripe.json",
+      "actions_count": 5
+    },
+    {
+      "id": "salesforce",
+      "name": "Salesforce",
+      "category": "crm_finance",
+      "description": "CRM leads, contacts, opportunities, and SOQL query execution.",
+      "file": "crm_finance/salesforce.json",
+      "actions_count": 4
+    },
+    {
+      "id": "hubspot",
+      "name": "HubSpot",
+      "category": "crm_finance",
+      "description": "Marketing and sales CRM contacts, deals, company records, and tickets.",
+      "file": "crm_finance/hubspot.json",
+      "actions_count": 4
+    }
+  ]
+}

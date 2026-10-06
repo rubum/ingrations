@@ -1,0 +1,118 @@
+{
+  "id": "datadog",
+  "name": "Datadog",
+  "description": "Metrics querying, APM event log stream, and monitor alert status.",
+  "category": "cloud",
+  "base_url": "https://api.datadoghq.com",
+  "icon": "activity",
+  "docs_url": "https://docs.datadoghq.com/api/latest/",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "api_key",
+    "header_name": "DD-API-KEY",
+    "env_vars": ["DATADOG_API_KEY", "DD_API_KEY", "DD_APP_KEY"]
+  },
+  "actions": [
+    {
+      "id": "datadog.query_metrics",
+      "name": "Query Timeseries Metrics",
+      "description": "Queries timeseries data using Datadog metric query syntax.",
+      "app_id": "datadog",
+      "method": "GET",
+      "path": "/api/v1/query",
+      "tags": ["metrics", "read"],
+      "parameters": [
+        {
+          "name": "from",
+          "type": "integer",
+          "description": "Start of the queried time period, seconds since the Unix epoch",
+          "required": true,
+          "location": "query"
+        },
+        {
+          "name": "to",
+          "type": "integer",
+          "description": "End of the queried time period, seconds since the Unix epoch",
+          "required": true,
+          "location": "query"
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "description": "Query string (e.g. 'avg:system.cpu.user{*} by {host}')",
+          "required": true,
+          "location": "query"
+        }
+      ]
+    },
+    {
+      "id": "datadog.list_monitors",
+      "name": "List Monitors",
+      "description": "Lists all monitors and alert thresholds in Datadog.",
+      "app_id": "datadog",
+      "method": "GET",
+      "path": "/api/v1/monitor",
+      "tags": ["monitors", "read"],
+      "parameters": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Filter monitors by name substring",
+          "required": false,
+          "location": "query"
+        }
+      ]
+    },
+    {
+      "id": "datadog.get_event",
+      "name": "Get APM Event",
+      "description": "Gets an event's details by event ID.",
+      "app_id": "datadog",
+      "method": "GET",
+      "path": "/api/v1/events/{event_id}",
+      "tags": ["events", "read"],
+      "parameters": [
+        {
+          "name": "event_id",
+          "type": "integer",
+          "description": "The event ID",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "datadog.post_event",
+      "name": "Post Event",
+      "description": "Posts an event to the Datadog event stream.",
+      "app_id": "datadog",
+      "method": "POST",
+      "path": "/api/v1/events",
+      "tags": ["events", "write"],
+      "parameters": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "The event title",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "description": "The body text of the event",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "alert_type",
+          "type": "string",
+          "description": "Alert type: error, warning, info, success",
+          "required": false,
+          "location": "body",
+          "default": "info"
+        }
+      ]
+    }
+  ]
+}

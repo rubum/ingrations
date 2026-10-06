@@ -1,0 +1,163 @@
+{
+  "id": "slack",
+  "name": "Slack",
+  "description": "Channel messaging, direct messages, thread replies, and notifications.",
+  "category": "productivity",
+  "base_url": "https://slack.com/api",
+  "icon": "slack",
+  "docs_url": "https://api.slack.com/web",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bearer ",
+    "env_vars": ["SLACK_BOT_TOKEN", "SLACK_TOKEN"],
+    "oauth2_authorize_url": "https://slack.com/oauth/v2/authorize",
+    "oauth2_token_url": "https://slack.com/api/oauth.v2.access",
+    "oauth2_scopes": ["chat:write", "channels:read", "channels:history", "users:read"]
+  },
+  "actions": [
+    {
+      "id": "slack.post_message",
+      "name": "Post Message",
+      "description": "Sends a message or block-kit payload to a Slack channel.",
+      "app_id": "slack",
+      "method": "POST",
+      "path": "/chat.postMessage",
+      "tags": ["messages", "write"],
+      "parameters": [
+        {
+          "name": "channel",
+          "type": "string",
+          "description": "Channel, private group, or IM channel ID to send message to",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "description": "The formatted text of the message to send",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "thread_ts",
+          "type": "string",
+          "description": "Provide another message's ts value to make this message a reply",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "slack.list_conversations",
+      "name": "List Conversations",
+      "description": "Lists public channels in a workspace.",
+      "app_id": "slack",
+      "method": "GET",
+      "path": "/conversations.list",
+      "tags": ["channels", "read"],
+      "parameters": [
+        {
+          "name": "types",
+          "type": "string",
+          "description": "Mix and match channel types: public_channel, private_channel",
+          "required": false,
+          "location": "query",
+          "default": "public_channel"
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "description": "The maximum number of items to return (max 1000)",
+          "required": false,
+          "location": "query",
+          "default": 100
+        }
+      ]
+    },
+    {
+      "id": "slack.get_conversation_history",
+      "name": "Get Conversation History",
+      "description": "Fetches a conversation's history of messages and events.",
+      "app_id": "slack",
+      "method": "GET",
+      "path": "/conversations.history",
+      "tags": ["messages", "read"],
+      "parameters": [
+        {
+          "name": "channel",
+          "type": "string",
+          "description": "Conversation ID to fetch history for",
+          "required": true,
+          "location": "query"
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "description": "Number of messages to return (max 100)",
+          "required": false,
+          "location": "query",
+          "default": 20
+        }
+      ]
+    },
+    {
+      "id": "slack.add_reaction",
+      "name": "Add Reaction",
+      "description": "Adds an emoji reaction to a message.",
+      "app_id": "slack",
+      "method": "POST",
+      "path": "/reactions.add",
+      "tags": ["reactions", "write"],
+      "parameters": [
+        {
+          "name": "channel",
+          "type": "string",
+          "description": "Channel where the message was posted",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Reaction (emoji) name without colons",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "description": "Timestamp of the message to react to",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "slack.set_topic",
+      "name": "Set Topic",
+      "description": "Sets the topic on a specified channel.",
+      "app_id": "slack",
+      "method": "POST",
+      "path": "/conversations.setTopic",
+      "tags": ["channels", "write"],
+      "parameters": [
+        {
+          "name": "channel",
+          "type": "string",
+          "description": "Channel ID to set the topic of",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "topic",
+          "type": "string",
+          "description": "The new topic text",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    }
+  ]
+}

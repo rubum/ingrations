@@ -1,0 +1,252 @@
+{
+  "id": "github",
+  "name": "GitHub",
+  "description": "Code hosting, pull requests, issues, commits, repositories, and releases.",
+  "category": "devtools",
+  "base_url": "https://api.github.com",
+  "icon": "github",
+  "docs_url": "https://docs.github.com/rest",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bearer ",
+    "env_vars": ["GITHUB_TOKEN", "GH_TOKEN"],
+    "oauth2_authorize_url": "https://github.com/login/oauth/authorize",
+    "oauth2_token_url": "https://github.com/login/oauth/access_token",
+    "oauth2_scopes": ["repo", "read:org", "user"]
+  },
+  "actions": [
+    {
+      "id": "github.get_repo",
+      "name": "Get Repository",
+      "description": "Retrieves metadata and status details for a specified repository.",
+      "app_id": "github",
+      "method": "GET",
+      "path": "/repos/{owner}/{repo}",
+      "tags": ["repo", "read"],
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner or organization name",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "github.create_issue",
+      "name": "Create Issue",
+      "description": "Creates a new issue in a GitHub repository.",
+      "app_id": "github",
+      "method": "POST",
+      "path": "/repos/{owner}/{repo}/issues",
+      "tags": ["issues", "write"],
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner or organization",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Title of the issue",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "description": "Markdown body content of the issue",
+          "required": false,
+          "location": "body"
+        },
+        {
+          "name": "labels",
+          "type": "array",
+          "description": "List of label names to apply",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "github.list_issues",
+      "name": "List Issues",
+      "description": "Lists issues in a repository with optional state filtering.",
+      "app_id": "github",
+      "method": "GET",
+      "path": "/repos/{owner}/{repo}/issues",
+      "tags": ["issues", "read"],
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner or organization",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "description": "Issue state filter: open, closed, or all",
+          "required": false,
+          "location": "query",
+          "default": "open",
+          "enum": ["open", "closed", "all"]
+        },
+        {
+          "name": "per_page",
+          "type": "integer",
+          "description": "Number of results per page (max 100)",
+          "required": false,
+          "location": "query",
+          "default": 30
+        }
+      ]
+    },
+    {
+      "id": "github.create_pull_request",
+      "name": "Create Pull Request",
+      "description": "Opens a new pull request across branches.",
+      "app_id": "github",
+      "method": "POST",
+      "path": "/repos/{owner}/{repo}/pulls",
+      "tags": ["pull_requests", "write"],
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Title of the pull request",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "head",
+          "type": "string",
+          "description": "The name of the branch where your changes are implemented",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "base",
+          "type": "string",
+          "description": "The name of the branch you want the changes pulled into",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "description": "The contents of the pull request description",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "github.get_pull_request",
+      "name": "Get Pull Request",
+      "description": "Retrieves pull request status, mergeability, diff stats, and head commit.",
+      "app_id": "github",
+      "method": "GET",
+      "path": "/repos/{owner}/{repo}/pulls/{pull_number}",
+      "tags": ["pull_requests", "read"],
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "pull_number",
+          "type": "integer",
+          "description": "The pull request number",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "github.search_repositories",
+      "name": "Search Repositories",
+      "description": "Searches for repositories on GitHub based on query terms.",
+      "app_id": "github",
+      "method": "GET",
+      "path": "/search/repositories",
+      "tags": ["search", "read"],
+      "parameters": [
+        {
+          "name": "q",
+          "type": "string",
+          "description": "The search keywords and qualifiers",
+          "required": true,
+          "location": "query"
+        },
+        {
+          "name": "sort",
+          "type": "string",
+          "description": "Sort field: stars, forks, or updated",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "per_page",
+          "type": "integer",
+          "description": "Results per page (max 100)",
+          "required": false,
+          "location": "query",
+          "default": 10
+        }
+      ]
+    }
+  ]
+}

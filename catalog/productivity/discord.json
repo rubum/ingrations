@@ -1,0 +1,126 @@
+{
+  "id": "discord",
+  "name": "Discord",
+  "description": "Channel messaging, webhooks, voice status, and guild management.",
+  "category": "productivity",
+  "base_url": "https://discord.com/api/v10",
+  "icon": "message-circle",
+  "docs_url": "https://discord.com/developers/docs/reference",
+  "version": "1.0.0",
+  "auth": {
+    "auth_type": "bearer_token",
+    "header_name": "Authorization",
+    "token_prefix": "Bot ",
+    "env_vars": ["DISCORD_BOT_TOKEN", "DISCORD_TOKEN"]
+  },
+  "actions": [
+    {
+      "id": "discord.create_message",
+      "name": "Create Message",
+      "description": "Sends a message to a Discord text channel.",
+      "app_id": "discord",
+      "method": "POST",
+      "path": "/channels/{channel_id}/messages",
+      "tags": ["messages", "write"],
+      "parameters": [
+        {
+          "name": "channel_id",
+          "type": "string",
+          "description": "Target Discord channel ID",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "description": "Message contents (up to 2000 characters)",
+          "required": true,
+          "location": "body"
+        },
+        {
+          "name": "embeds",
+          "type": "array",
+          "description": "Embedded rich content array",
+          "required": false,
+          "location": "body"
+        }
+      ]
+    },
+    {
+      "id": "discord.get_channel",
+      "name": "Get Channel",
+      "description": "Retrieves channel details and type by channel ID.",
+      "app_id": "discord",
+      "method": "GET",
+      "path": "/channels/{channel_id}",
+      "tags": ["channels", "read"],
+      "parameters": [
+        {
+          "name": "channel_id",
+          "type": "string",
+          "description": "Channel snowflake ID",
+          "required": true,
+          "location": "path"
+        }
+      ]
+    },
+    {
+      "id": "discord.get_channel_messages",
+      "name": "Get Channel Messages",
+      "description": "Fetches recent messages from a channel.",
+      "app_id": "discord",
+      "method": "GET",
+      "path": "/channels/{channel_id}/messages",
+      "tags": ["messages", "read"],
+      "parameters": [
+        {
+          "name": "channel_id",
+          "type": "string",
+          "description": "Channel snowflake ID",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "description": "Max number of messages to return (1-100)",
+          "required": false,
+          "location": "query",
+          "default": 25
+        }
+      ]
+    },
+    {
+      "id": "discord.execute_webhook",
+      "name": "Execute Webhook",
+      "description": "Executes a Discord incoming webhook without bot auth.",
+      "app_id": "discord",
+      "method": "POST",
+      "path": "/webhooks/{webhook_id}/{webhook_token}",
+      "tags": ["webhook", "write"],
+      "parameters": [
+        {
+          "name": "webhook_id",
+          "type": "string",
+          "description": "Webhook snowflake ID",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "webhook_token",
+          "type": "string",
+          "description": "Webhook secret token",
+          "required": true,
+          "location": "path"
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "description": "Message text content",
+          "required": true,
+          "location": "body"
+        }
+      ]
+    }
+  ]
+}
